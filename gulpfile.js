@@ -1,80 +1,99 @@
 var gulp = require('gulp');
+
+var Server = require('karma').Server;
+
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-var minifycss = require('gulp-minify-css');
-var Server = require('karma').Server;
-var jshint = require('gulp-jshint');
+var minifyCss = require('gulp-minify-css');
 var connect = require('gulp-connect');
+var del = require('del');
 
-// *******************************************
+var appDir = './src';
 
-gulp.task('buildApp', function(){
-  return gulp.src(['src/js/config.js', 'src/js/**/*.js'])
-    .pipe(concat('app.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('dist'))
-    .pipe(connect.reload());
+var html = appDir + '/**/*.html';
+var javascripts = appDir + '/js/**/*.js';
+var stylesheets = appDir + '/css/**/*.css';
+var tests = appDir + '/tests/**/*.js';
+
+var vendorDir = './bower_components';
+
+var vendorJavascripts = vendorDir + '/**/*.min.js';
+var vendorStylesheets = vendorDir + '/**/*.css';
+
+var buildDir = './build';
+
+gulp.task('jshint', function() {
+  return gulp.src([javascripts, tests])
+          .pipe(jshint())
+          .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('buildVendor', function(){
-  return gulp.src([
-    'bower_components/jquery/dist/jquery.min.js',
-    'bower_components/**/*.min.js'])
-    .pipe(concat('vendors.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('buildCSS', function(){
-  return gulp.src([
-    'bower_components/bootstrap/dist/css/bootstrap.css',
-    'src/css/**/*.css'])
-  .pipe(concat('styles.css'))
-  .pipe(minifycss())
-  .pipe(gulp.dest('dist'))
-  .pipe(connect.reload());
-});
-
-gulp.task('moveHTML', function(){
-  return gulp.src('src/**/*.html')
-    .pipe(gulp.dest('dist'))
-    .pipe(connect.reload());
-});
-
-gulp.task('build', ['buildApp', 'buildVendor', 'buildCSS', 'moveHTML']);
-
-// **********************************
-
-gulp.task('karma', function (done) {
+gulp.task('karma', function(done) {
   new Server({
-    configFile: __dirname + '/karma.conf.js',
+    configFile: __dirname + '/karma.conf.js', 
     singleRun: true
   }, done).start();
 });
 
-gulp.task('jshint', function(){
-  return gulp.src(['src/js/**/*.js', 'src/tests/**/*.js'])
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+gulp.task('test', ['jshint', 'karma']);
+
+gulp.task('clean', function() {
+  del(buildDir + '/**/*');
 });
 
-gulp.task('test', ['karma', 'jshint']);
+gulp.task('buildVendorJS', function() {
+  return gulp.src([
+            'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/**/*.min.js',
+            javascripts
+          ]).pipe(concat('vendor.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest(buildDir))
+            .pipe(connect.reload());
+});
 
-// ***************************************
+gulp.task('buildAppJS', function() {
+  return gulp.src(javascripts)
+            .pipe(concat('app.js'))
+            .pipe(uglify())
+            .pipe(gulp.dest(buildDir))
+            .pipe(connect.reload());
+});
 
-gulp.task('connect', function(){
+gulp.task('buildJS', ['buildVendorJS', 'buildAppJS']);
+
+gulp.task('buildCSS', function() {
+  return gulp.src([
+            'bower_components/bootstrap/dist/css/bootstrap.css',
+            stylesheets
+          ]).pipe(concat('styles.css'))
+            .pipe(minifyCss())
+            .pipe(gulp.dest(buildDir))
+            .pipe(connect.reload());
+});
+
+gulp.task('moveHTML', function() {
+  return gulp.src(html)
+            .pipe(gulp.dest(buildDir))
+            .pipe(connect.reload());
+});
+
+gulp.task('build', ['clean', 'buildCSS', 'buildJS', 'moveHTML']);
+
+gulp.task('watch', function() {
+  gulp.watch([javascripts, tests], ['test', 'buildAppJS']);
+  gulp.watch([vendorJavascripts], ['test', 'buildVendorJS']);
+  gulp.watch([vendorStylesheets, stylesheets], ['buildCSS']);
+  gulp.watch([html], ['moveHTML']);
+});
+
+gulp.task('connect', function() {
   connect.server({
-    root: 'dist',
+    root: buildDir,
     livereload: true
   });
 });
 
-gulp.task('watch', function(){
-  gulp.watch('src/js/**/*.js', ['buildApp', 'test']);
-  gulp.watch('src/css/**/*.css', ['buildCSS']);
-  gulp.watch('src/**/*.html', ['moveHTML']);
-});
-
-// *******************************************
-
-gulp.task('default', ['build', 'test', 'watch', 'connect']);
+gulp.task('default', ['clean', 'build', 'test', 'watch', 'connect']);
