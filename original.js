@@ -123,5 +123,4 @@ $(document).ready(function(){
 
   $('#authorize-btn').click(handleAuthClick);
 
-
 });
