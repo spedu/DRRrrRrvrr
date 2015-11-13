@@ -1,5 +1,7 @@
 angular.module('DRRrrRrvrr')
 .directive('oauth', ['$interval', 'GoogleDriveService', function($interval, googleDriveService) {
+  var check;
+
   var link = function(scope, element, attrs) {
     var checkAuth = function() {
       gapi.auth.authorize({
@@ -12,7 +14,8 @@ angular.module('DRRrrRrvrr')
     var handleAuthResult = function(authResult) {
       if(authResult && !authResult.error) {
         element.hide();
-        googleDriveService.isAuthorized = true; 
+        googleDriveService.isAuthorized = true;
+        googleDriveService.loadApi();
       } else {
         element.show();
         googleDriveService.isAuthorized = false;
@@ -31,7 +34,7 @@ angular.module('DRRrrRrvrr')
 
     element.on('click', handleAuthClick);
 
-    $interval(checkAuth, 2000);        
+    check = $interval(checkAuth, 2000);
     checkAuth();
   };
 
