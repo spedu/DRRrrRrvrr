@@ -1,7 +1,7 @@
 var CLIENT_ID = '6783891317-06e4vkqde6sdhr6t3nr9o7dc66mkh82c.apps.googleusercontent.com';
 var SCOPES = ['https://www.googleapis.com/auth/drive.readonly'];
 
-$(document).ready(function(){
+$(document).ready(function() {
   var action;
   if(window.action == 'list'){
     action = listFiles;

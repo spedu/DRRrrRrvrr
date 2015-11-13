@@ -11,14 +11,20 @@
       }
     }, 2000);
   };
-  window.action = "list";
   </script>
   <script src="https://apis.google.com/js/client.js?onload=init"></script>
   <script src="vendor.js"></script>
   <script src="app.js"></script>
 </head>
-<body class="container" ng-app="DRRrrRrvrr">
-  <h1>Hello Google DRRrrRrvrr!</h1>
-  <div ng-view class="well"></div>
+<body ng-app="DRRrrRrvrr">
+  <div class="container">
+    <h1>Hello Google DRRrrRrvrr!</h1>
+    <div class="row">
+      <div class="col-md-12" ng-controller="AuthController as ac">
+        <oauth></oauth>
+      </div>
+    </div>
+    <div class="row" ng-view></div>
+  </div>
 </body>
 </html>
