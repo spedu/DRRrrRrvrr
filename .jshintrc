@@ -92,6 +92,7 @@
     "globals"       : {
         "angular": true,
         "module": true,
-        "inject": true
+        "inject": true,
+        "gapi": true
     }        // additional predefined global variables
 }
