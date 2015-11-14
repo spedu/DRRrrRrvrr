@@ -13,7 +13,6 @@ angular.module('DRRrrRrvrr')
       return authService.isAuthorized;
     }, function(isAuthorized) {
       if(isAuthorized) {
-        console.log('isAuthorized DocumentController');
         googleDriveService.loadFile(vm.fileId);
       }
     });

@@ -30,6 +30,8 @@ angular.module('DRRrrRrvrr')
   };
 
   this.loadFile = function(fileId, callback) {
+    svc.current = undefined;
+
     var request = gapi.client.drive.files.get({fileId: fileId});
 
     request.execute(function(resp) {
@@ -41,6 +43,7 @@ angular.module('DRRrrRrvrr')
         }
       }).then(function(data) {
         svc.current = data.data;
+
         if(callback){
           callback();
         }
