@@ -6,10 +6,8 @@ angular.module('DRRrrRrvrr')
     authService.authorize(true);
   };
 
-  var link = function() {
-    check = $interval(checkAuth, 2000);
-    checkAuth();
-  };
+  check = $interval(checkAuth, 2000);
+  checkAuth();
 
   var controller = function() {
     this.authService = authService;
@@ -20,7 +18,6 @@ angular.module('DRRrrRrvrr')
   };
 
   return {
-    link: link,
     controller: controller,
     controllerAs: 'ac',
     templateUrl: 'templates/oauth.html'
