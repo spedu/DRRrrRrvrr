@@ -1,18 +1,9 @@
 angular.module('DRRrrRrvrr')
-.service('GoogleDriveService', ['$http', 'CLIENT_ID', 'SCOPES', 'TranslatorService', function($http, CLIENT_ID, SCOPES, translatorService) {
+.service('GoogleDriveService', ['$http', function($http) {
   var svc = this;
-
-  this.CLIENT_ID = CLIENT_ID;
-  this.SCOPES = SCOPES;
-
-  this.isAuthorized = false;
 
   this.files = [];
   this.current = null;
-
-  this.loadApi = function() {
-    gapi.client.load('drive', 'v2');
-  };
 
   this.loadFiles = function() {
     var request = gapi.client.drive.files.list({
