@@ -11,11 +11,13 @@ angular.module('DRRrrRrvrr')
       immediate = true;
     }
     
-    gapi.auth.authorize({
-      client_id: clientId,
-      scope: scopes.join(' '),
-      immediate: immediate
-    }, this.handleAuthResult);
+    if(gapi.auth && gapi.auth.authorize) {
+      gapi.auth.authorize({
+        client_id: clientId,
+        scope: scopes.join(' '),
+        immediate: immediate
+      }, this.handleAuthResult);
+    }
   };
 
   this.handleAuthResult = function(authResult) {
