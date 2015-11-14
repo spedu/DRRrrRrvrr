@@ -8,7 +8,8 @@ angular.module('DRRrrRrvrr')
     return authService.isAuthorized;
   }, function(isAuthorized) {
     if(isAuthorized) {
-      googleDriveService.loadApi();
+      console.log('isAuthorized ListController');
+      googleDriveService.loadFiles();
     }
   });
 }]);

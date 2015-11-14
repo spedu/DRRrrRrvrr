@@ -1,22 +1,13 @@
 angular.module('DRRrrRrvrr')
-.service('GoogleDriveService', ['$http', function($http) {
+.service('GoogleDriveService', ['$rootScope', '$http', function($rootScope, $http) {
   var svc = this;
 
-  this.apiLoaded = false;
-
   this.files = [];
-  this.current = null;
+  this.current;
 
-  this.loadApi = function() {
-    gapi.client.load('drive', 'v2', function() {
-      if(!svc.apiLoaded) {
-        svc.loadFiles();
-      }
-      svc.apiLoaded = true;
-    });
-  };
+  this.loadFiles = function(callback) {
+    svc.files = [];
 
-  this.loadFiles = function() {
     var request = gapi.client.drive.files.list({
       'maxResults': 10,
       'q': "mimeType = 'application/vnd.google-apps.document'"
@@ -29,10 +20,16 @@ angular.module('DRRrrRrvrr')
           svc.files.push(files[i]);
         }
       }
+
+      $rootScope.$apply();
+
+      if(callback) {
+        callback();
+      }
     });
   };
 
-  this.displayFile = function(fileId, callback) {
+  this.loadFile = function(fileId, callback) {
     var request = gapi.client.drive.files.get({fileId: fileId});
 
     request.execute(function(resp) {
@@ -43,7 +40,7 @@ angular.module('DRRrrRrvrr')
           'Authorization': 'Bearer '+accessToken
         }
       }).then(function(data) {
-        svc.current = data;
+        svc.current = data.data;
         if(callback){
           callback();
         }

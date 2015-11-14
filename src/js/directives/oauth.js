@@ -1,5 +1,6 @@
 angular.module('DRRrrRrvrr')
-.directive('oauth', ['$interval', 'AuthService', function($interval, authService) {
+.directive('oauth', ['$rootScope', '$interval', 'AuthService', function($rootScope, $interval, authService) {
+  /*
   var check;
 
   var checkAuth = function() {
@@ -8,11 +9,12 @@ angular.module('DRRrrRrvrr')
 
   check = $interval(checkAuth, 2000);
   checkAuth();
+  */
 
   var controller = function() {
     this.authService = authService;
 
-    this.handleAuthClick = function() {
+    this.authorize = function() {
       authService.authorize(false);
     };
   };
