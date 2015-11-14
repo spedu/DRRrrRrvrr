@@ -2,10 +2,6 @@ angular.module('DRRrrRrvrr')
 .service('AuthService', ['CLIENT_ID', 'SCOPES', function(clientId, scopes) {
   var svc = this;
 
-  this.loadApi = function() {
-    gapi.client.load('drive', 'v2');
-  };
-
   this.authorize = function(immediate) {
     if(immediate === undefined) {
       immediate = true;
@@ -23,7 +19,6 @@ angular.module('DRRrrRrvrr')
   this.handleAuthResult = function(authResult) {
     if(authResult && !authResult.error) {
       svc.isAuthorized = true;
-      svc.loadApi();
     } else {
       svc.isAuthorized = false;
     }
