@@ -3,7 +3,7 @@ angular.module('DRRrrRrvrr')
   var svc = this;
 
   this.files = [];
-  this.current;
+  this.current = null;
 
   this.loadFiles = function(callback) {
     svc.files = [];

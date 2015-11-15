@@ -6,7 +6,7 @@ angular.module('DRRrrRrvrr')
 
     this.fileId = $routeParams.fileId;
 
-    this.body;
+    this.body = '';
     this.googleDriveService = googleDriveService;
 
     $scope.$watch(function() {
