@@ -1,7 +1,12 @@
 angular.module('DRRrrRrvrr')
 .directive('oauth', ['$rootScope', '$interval', 'AuthService', function($rootScope, $interval, authService) {
-  $interval(authService.authorize, 5000);
-  authService.authorize(true);
+
+  var checkAuth = function() {
+    authService.authorize(true);
+  };
+
+  $interval(checkAuth, 5000);
+  checkAuth(true);
 
   var controller = function() {
     this.authService = authService;

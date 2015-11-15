@@ -3,7 +3,7 @@ angular.module('DRRrrRrvrr')
   var svc = this;
 
   this.authorize = function(immediate) {
-    if(immediate === undefined || typeof immediate !== 'boolean') {
+    if(immediate === undefined) {
       immediate = true;
     }
     
