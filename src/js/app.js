@@ -1,6 +1,5 @@
-var app = angular.module('DRRrrRrvrr', ['ngRoute']);
-
-app.config(['$routeProvider', function($routeProvider) {
+var app = angular.module('DRRrrRrvrr', ['ngRoute'])
+.config(['$routeProvider', function($routeProvider) {
   $routeProvider
     .when('/list', {
       templateUrl: 'templates/list.html',
@@ -15,10 +14,4 @@ app.config(['$routeProvider', function($routeProvider) {
     .otherwise({
       redirectTo: '/list'
     });
-}]);
-
-app.filter('nl2br', ['$sce', function($sce) {
-    return function(text) {
-        return text ? $sce.trustAsHtml(text.replace(/\n/g, '<br/>')) : '';
-    };
 }]);
