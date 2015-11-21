@@ -27,7 +27,6 @@ describe('AuthService', function() {
 
       authService = $injector.get('AuthService');
     });
-
   });
 
   describe('#authorize', function() {
