@@ -2,11 +2,9 @@ angular.module('DRRrrRrvrr')
 .service('AuthService', ['$rootScope', 'CLIENT_ID', 'SCOPES', function($rootScope, clientId, scopes) {
   var svc = this;
 
-  this.authorize = function(immediate) {
-    if(immediate === undefined) {
-      immediate = true;
-    }
-    
+  svc.isAuthorized = false;
+
+  this.authorize = function(immediate) {    
     if(gapi.auth && gapi.auth.authorize) {
       gapi.auth.authorize({
         client_id: clientId,

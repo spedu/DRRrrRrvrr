@@ -1,4 +1,4 @@
-var app = angular.module('DRRrrRrvrr', ['ngRoute'])
+angular.module('DRRrrRrvrr', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider
     .when('/list', {
