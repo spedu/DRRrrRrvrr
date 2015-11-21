@@ -37,7 +37,7 @@ describe('GoogleDriveService', function() {
         client: {
           drive: {
             files: {
-              list: function(options) {
+              list: function() {
                 return {
                   execute: function(callback) {
                     callback({ items: filesMock });
@@ -45,7 +45,7 @@ describe('GoogleDriveService', function() {
                 };
               },
 
-              get: function(options) {
+              get: function() {
                 return {
                   execute: function(callback) {
                     callback({
@@ -77,7 +77,7 @@ describe('GoogleDriveService', function() {
   describe('#loadFile', function() {
     it('should request file from google drive', function() {
       var fileId = '12345';
-      var documentResponse = {data: 'Document Text'};
+      var documentResponse = 'Document Text';
       $httpBackend.when('GET', documentURL)
         .respond(200, documentResponse);
 
@@ -87,12 +87,13 @@ describe('GoogleDriveService', function() {
       expect(driveService.current).toBeUndefined();
 
       driveService.loadFile(fileId, function() {
-        console.log('here test callback');
         expect(gapi.client.drive.files.get).toHaveBeenCalledWith({fileId: fileId});
         expect(gapi.auth.getToken).toHaveBeenCalled();
 
-        expect(driveService.current).toBe(documentResponse.data);
+        expect(driveService.current).toBe(documentResponse);
       });
+
+      $httpBackend.flush();
     });
   });
 });

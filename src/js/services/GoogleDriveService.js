@@ -30,15 +30,11 @@ angular.module('DRRrrRrvrr')
     request.execute(function(resp) {
       var accessToken = gapi.auth.getToken().access_token;
 
-      console.log(resp);
-      console.log($http.get);
-
       $http.get(resp.exportLinks["text/plain"], {
         headers: {
           'Authorization': 'Bearer '+accessToken
         }
       }).then(function(data) {
-        console.log('data');
         svc.current = data.data;
 
         if(callback){
