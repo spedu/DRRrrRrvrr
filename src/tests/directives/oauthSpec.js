@@ -42,20 +42,26 @@ describe('oath', function() {
   });
 
   describe('when user is not authorized', function() {
-    xit('should show the authorize button', function() {
+    it('should show the authorize button', function() {
       authService.isAuthorized = false;
-      
-      expect(compiledDirective.css('display')).not.toBe('hidden');
+      $scope.$digest();
+      expect(compiledDirective.find('.authorize-control').hasClass('ng-hide')).toBeFalsy();
     });
   });
 
   describe('when user is authorized', function() {
-    xit('should hide the authorize button', function() {
+    it('should hide the authorize button', function() {
       authService.isAuthorized = true;
-      
-      expect(compiledDirective.css('display')).toBe('hidden');
+      $scope.$digest();
+      expect(compiledDirective.find('.authorize-control').hasClass('ng-hide')).toBeTruthy();
     });
   });
 
-
+  describe('clicking the authorize button', function() {
+    it('should attempt to authorize the user', function() {
+      spyOn(authService, 'authorize');
+      compiledDirective.find('#authorize-btn').trigger('click');
+      expect(authService.authorize).toHaveBeenCalled();
+    });
+  });
 });
