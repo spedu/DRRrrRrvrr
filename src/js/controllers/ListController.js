@@ -6,9 +6,15 @@ angular.module('DRRrrRrvrr')
 
   $scope.$watch(function() {
     return authService.isAuthorized;
-  }, function(isAuthorized) {
-    if(isAuthorized) {
+  }, function() {
+    vm.loadFiles();
+  });
+
+  vm.loadFiles = function() {
+    if(authService.isAuthorized) {
       googleDriveService.loadFiles();
     }
-  });
+  };
+
+  vm.loadFiles();  
 }]);

@@ -11,10 +11,8 @@ angular.module('DRRrrRrvrr')
 
     $scope.$watch(function() {
       return authService.isAuthorized;
-    }, function(isAuthorized) {
-      if(isAuthorized) {
-        googleDriveService.loadFile(vm.fileId);
-      }
+    }, function() {
+      vm.loadFile();
     });
 
     $scope.$watch(function() {
@@ -23,9 +21,17 @@ angular.module('DRRrrRrvrr')
       vm.zombifyBody(body);
     });
 
+    this.loadFile = function() {
+      if(authService.isAuthorized) {
+        googleDriveService.loadFile(vm.fileId);
+      }
+    };
+
     this.zombifyBody = function(body) {
       translatorService.translate(body, function(translatedBody) {
         vm.body = translatedBody;
       });
     };
+
+    vm.loadFile();
 }]);

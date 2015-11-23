@@ -39,7 +39,7 @@ describe('DocumentController', function() {
     expect(documentController.fileId).toBe(fileId);
   });
 
-  describe('when user authorization changes', function() {
+  describe('#loadFile', function() {
     beforeEach(function() {
       spyOn(driveService, 'loadFile');
     });
@@ -47,24 +47,15 @@ describe('DocumentController', function() {
     it('should load file once user is authorized', function() {
       authService.isAuthorized = true;
       expect(authService.isAuthorized).toBeTruthy();
-      $scope.$digest();
+      documentController.loadFile();
       expect(driveService.loadFile).toHaveBeenCalledWith(fileId);
     });
 
     it('should not call load file if is authorized is false', function() {
       authService.isAuthorized = false;
       expect(authService.isAuthorized).toBeFalsy();
-      $scope.$digest();
+      documentController.loadFile();
       expect(driveService.loadFile).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('when the current file body is set', function() {
-    it('should call zombifyBody', function() {
-      spyOn(documentController, 'zombifyBody');
-      driveService.current = 'Something';
-      $scope.$digest();
-      expect(documentController.zombifyBody).toHaveBeenCalledWith('Something');
     });
   });
 
@@ -74,6 +65,25 @@ describe('DocumentController', function() {
       documentController.zombifyBody('Hello');
       expect(translatorService.translate).toHaveBeenCalled();
       expect(documentController.body).toBe('Hello!');
+    });
+  });
+
+  describe('when user authorization changes', function() {
+    it('should call load files', function() {
+      spyOn(documentController, 'loadFile');
+      authService.isAuthorized = true;
+      expect(authService.isAuthorized).toBeTruthy();
+      $scope.$digest();
+      expect(documentController.loadFile).toHaveBeenCalled();
+    });
+  });
+
+  describe('when the current file body is set', function() {
+    it('should call zombifyBody', function() {
+      spyOn(documentController, 'zombifyBody');
+      driveService.current = 'Something';
+      $scope.$digest();
+      expect(documentController.zombifyBody).toHaveBeenCalledWith('Something');
     });
   });
 });

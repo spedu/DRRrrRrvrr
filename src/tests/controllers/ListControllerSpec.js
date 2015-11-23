@@ -18,7 +18,7 @@ describe('ListController', function() {
     });
   });
 
-  describe('when user authorization changes', function() {
+  describe('#loadFiles', function() {
     beforeEach(function() {
       spyOn(driveService, 'loadFiles');
     });
@@ -26,15 +26,25 @@ describe('ListController', function() {
     it('should load files once user is authorized', function() {
       authService.isAuthorized = true;
       expect(authService.isAuthorized).toBeTruthy();
-      $scope.$digest();
+      listController.loadFiles();
       expect(driveService.loadFiles).toHaveBeenCalled();
     });
 
     it('should not call load files if is authorized is false', function() {
       authService.isAuthorized = false;
       expect(authService.isAuthorized).toBeFalsy();
-      $scope.$digest();
+      listController.loadFiles();
       expect(driveService.loadFiles).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when user authorization changes', function() {
+    it('should call load files', function() {
+      spyOn(listController, 'loadFiles');
+      authService.isAuthorized = true;
+      expect(authService.isAuthorized).toBeTruthy();
+      $scope.$digest();
+      expect(listController.loadFiles).toHaveBeenCalled();
     });
   });
   

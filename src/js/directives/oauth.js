@@ -17,6 +17,7 @@ angular.module('DRRrrRrvrr')
   };
 
   return {
+    restrict: 'E',
     controller: controller,
     controllerAs: 'ac',
     templateUrl: 'templates/oauth.html'
