@@ -37,3 +37,4 @@ Then in a separate console you can re-run the tests:
 
 * Tested using Chrome and Firefox
 * The initial load of a document can sometimes take some time, my guess it's the heroku app spinning up + network time. Just need to wait a few moments.
+* There's also a limitation on the length of the query string sent over to the translator since it was done with query params on a get request instead of a post.
